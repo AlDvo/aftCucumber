@@ -1,0 +1,6 @@
+browser=chrome
+base.url=https://www.sberbank.ru/ru/person
+
+webdriver.chrome.driver=drv/chromedriver.exe
+implicitly.wait=15
+page.load.timeout=15
