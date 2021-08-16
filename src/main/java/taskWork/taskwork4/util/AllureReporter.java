@@ -1,24 +1,31 @@
 package taskWork.taskwork4.util;
 
+import io.cucumber.plugin.event.*;
+import io.qameta.allure.cucumber5jvm.AllureCucumber5Jvm;
 import taskWork.taskwork4.manager.DriverManager;
 import io.qameta.allure.Attachment;
-import io.qameta.allure.junit5.AllureJunit5;
-import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
-import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 
-public class AllureReporter extends AllureJunit5 implements AfterTestExecutionCallback  {
+public class AllureReporter extends AllureCucumber5Jvm {
 
     @Override
-    public void afterTestExecution(ExtensionContext context){
-        if(context.getExecutionException().isPresent()){
-            takeScreenshot();
-        }
+    public void setEventPublisher(EventPublisher publisher) {
+        EventHandler<TestStepFinished> eventHandler = new EventHandler<TestStepFinished>() {
+            @Override
+            public void receive(TestStepFinished testStepFinished) {
+                if (testStepFinished.getResult().getStatus().equals(Status.FAILED)) {
+                    takeScreenshot();
+                }
+            }
+        };
+        publisher.registerHandlerFor(TestStepFinished.class, eventHandler);
+        super.setEventPublisher(publisher);
     }
 
+
     @Attachment(type = "image/png", value = "Screenshoot")
-    public static byte[] takeScreenshot(){
-        return ((TakesScreenshot) DriverManager.getDriverManager().getDriver()).getScreenshotAs(OutputType.BYTES);
+    public static byte[] takeScreenshot() {
+        return ( (TakesScreenshot) DriverManager.getDriverManager().getDriver() ).getScreenshotAs(OutputType.BYTES);
     }
 }

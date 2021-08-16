@@ -25,7 +25,7 @@ public class InitManager {
      *
      * @see DriverManager
      * @see TestPropertis#getProperty(String)
-     * @see TaskWork.taskwork4_2.util.TestPropertis
+     * @see taskWork.taskwork4.util.TestPropertis
      */
     public static void initFramework() {
         driverManager.getDriver().manage().window().maximize();
