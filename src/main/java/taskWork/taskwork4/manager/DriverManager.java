@@ -1,9 +1,16 @@
 package taskWork.taskwork4.manager;
 
+import org.junit.jupiter.api.Assertions;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import taskWork.taskwork4.util.TestPropertis;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.util.concurrent.TimeUnit;
 
 public class DriverManager {
@@ -58,12 +65,42 @@ public class DriverManager {
      */
     public WebDriver getDriver() {
         if (driver == null) {
-            System.setProperty("webdriver.chrome.driver",testPropertis.getProperty("webdriver.chrome.driver"));
-            driver = new ChromeDriver();
-            driver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
-            driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-            driver.manage().window().maximize();
+//            System.setProperty("webdriver.chrome.driver",testPropertis.getProperty("webdriver.chrome.driver"));
+//            driver = new ChromeDriver();
+//            driver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
+//            driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+//            driver.manage().window().maximize();
+            switch (testPropertis.getProperty("browser")) {
+                case "firefox":
+                    System.setProperty("webdriver.gecko.driver", testPropertis.getProperty("webdriver.gecko.driver"));
+                    driver = new FirefoxDriver();
+                    break;
+                case "chrome":
+                    ChromeOptions options = new ChromeOptions();
+                    options.addArguments("incognito");
+                    options.addArguments("--disable-notifications");
+                    System.setProperty("webdriver.chrome.driver", testPropertis.getProperty("webdriver.chrome.driver.windows"));
+                    driver = new ChromeDriver(options);
+                    break;
+                case "remote":
+                    DesiredCapabilities capabilities = new DesiredCapabilities();
+                    capabilities.setBrowserName("chrome");
+                    capabilities.setVersion("73.0");
+                    capabilities.setCapability("enableVNC", true);
+                    capabilities.setCapability("enableVideo", false);
+                    try {
+                        driver = new RemoteWebDriver(
+                                URI.create("http://selenoid.appline.ru:4445/wd/hub/").toURL(),
+                                capabilities);
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                default:
+                    Assertions.fail("Типа браузера '" + testPropertis.getProperty("browser") + "' не существует во фреймворке");
+            }
         }
+
         return driver;
     }
 
