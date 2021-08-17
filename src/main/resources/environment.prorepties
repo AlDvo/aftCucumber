@@ -1,4 +1,4 @@
-browser=chrome
+browser=remote
 base.url=https://www.sberbank.ru/ru/person
 
 webdriver.chrome.driver.windows=drv/chromedriver.exe
