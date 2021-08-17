@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
         plugin = {"taskWork.taskwork4.util.AllureReporter"},
         glue = {"taskWork/taskwork4/steps"},
         features = {"src/test/java/resources"},
-        tags = {"@firstTest"}
+        tags = {"@Sberbank"}
 )
 public class CucumberRunner {
 }
