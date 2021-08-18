@@ -13,9 +13,6 @@ public class MainPage extends BasePage {
     @FindBy(xpath = "//nav[contains(@class,'kitt-top-menu_icons')]")
     WebElement topMenu;
 
-//    @FindBy(xpath = "//div[contains(@class,'kitt-top-menu__dropdown kitt-top-menu__dropdown_icons')]")
-//    WebElement subMenu;
-
     @Step("Нажали кнопку Закрыть , в всплывающем окне куки")
     public MainPage closeCookie(){
         cookie.click();

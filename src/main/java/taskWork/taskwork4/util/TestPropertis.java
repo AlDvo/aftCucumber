@@ -33,7 +33,6 @@ public class TestPropertis {
      */
     private TestPropertis() {
         loadApplicationProperties();
-        loadCustomProperties();
     }
 
 
@@ -63,24 +62,6 @@ public class TestPropertis {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-
-    /**
-     * Метод заменяет значение содержащиеся в ключах переменной {@link #properties}
-     * Заменяет на те значения, что передал пользователь через maven '-D{name.key}={value.key}'
-     * Замена будет происходить только в том случае если пользователь передаст совпадающий key из application.properties
-     *
-     * @see TestPropertis#TestPropertis()
-     */
-    private void loadCustomProperties() {
-        properties.forEach((key, value) -> System.getProperties()
-                .forEach((customUserKey, customUserValue) -> {
-                    if (key.toString().equals(customUserKey.toString()) &&
-                            !value.toString().equals(customUserValue.toString())) {
-                        properties.setProperty(key.toString(), customUserValue.toString());
-                    }
-                }));
     }
 
 
