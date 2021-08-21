@@ -28,6 +28,6 @@ public class MainPage extends BasePage {
     @Step("Выбрали пункт подменю '{value}'")
     public CompleteHousePage selectSubMenu(String value){
         driverManager.getDriver().findElement(By.xpath(".//a[text() = '"+value+"']")).click();
-        return new CompleteHousePage();
+        return pageManager.getCompleteHousePage();
     }
 }

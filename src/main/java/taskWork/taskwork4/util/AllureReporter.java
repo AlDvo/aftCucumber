@@ -1,6 +1,7 @@
 package taskWork.taskwork4.util;
 
 import io.cucumber.plugin.event.*;
+import io.qameta.allure.Allure;
 import io.qameta.allure.cucumber5jvm.AllureCucumber5Jvm;
 import taskWork.taskwork4.manager.DriverManager;
 import io.qameta.allure.Attachment;
@@ -15,7 +16,7 @@ public class AllureReporter extends AllureCucumber5Jvm {
             @Override
             public void receive(TestStepFinished testStepFinished) {
                 if (testStepFinished.getResult().getStatus().equals(Status.FAILED)) {
-                    takeScreenshot();
+                    Allure.getLifecycle().addAttachment("scrinshoot","image/png",null,takeScreenshot());
                 }
             }
         };
@@ -24,7 +25,7 @@ public class AllureReporter extends AllureCucumber5Jvm {
     }
 
 
-    @Attachment(type = "image/png", value = "Screenshoot")
+
     public static byte[] takeScreenshot() {
         return ( (TakesScreenshot) DriverManager.getDriverManager().getDriver() ).getScreenshotAs(OutputType.BYTES);
     }
